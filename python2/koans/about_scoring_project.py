@@ -33,9 +33,30 @@ from runner.koan import *
 #
 # Your goal is to write the score method.
 
-def score(dice):
+POSSIBLE_DICES = range(1, 7)
+ONE = 1
+FIVE = 5
+TRIPLE = 3
+
+
+def score(dices):
     # You need to write this method
-    pass
+    counts = {k: 0 for k in POSSIBLE_DICES}
+
+    for dice in dices:
+        counts[dice] += 1
+
+    total_score = 0
+
+    for num, cnt in counts.iteritems():
+        val = 1000 if num == ONE else num * 100
+        total_score += (cnt // TRIPLE) * val
+        counts[num] %= TRIPLE
+
+    total_score += counts[ONE] * 100
+    total_score += counts[FIVE] * 50
+
+    return total_score
 
 
 class AboutScoringProject(Koan):
